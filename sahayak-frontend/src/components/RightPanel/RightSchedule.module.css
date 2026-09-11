@@ -1,0 +1,210 @@
+.container {
+  width: 320px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem 1.25rem;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  border-left: 1px solid var(--border-subtle);
+  background-color: var(--bg-sidebar);
+}
+
+.panelCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Schedule List */
+.scheduleList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.scheduleItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+  font-size: 0.85rem;
+}
+
+.scheduleLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotDone {
+  background-color: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.dotPending {
+  background-color: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+.dotWarning {
+  background-color: #fbbf24;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
+}
+
+.timeText {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  min-width: 58px;
+}
+
+.taskTitle {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.statusBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+}
+
+.statusDone {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.statusPending {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.viewAllBtn {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+  margin-top: 0.25rem;
+}
+
+.viewAllBtn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  border-color: var(--border-hover);
+}
+
+/* Upcoming Reminder */
+.reminderItem {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.reminderIconWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.reminderDetails {
+  flex: 1;
+}
+
+.reminderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reminderName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.reminderTimeBadge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+.reminderSub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Motivation Card */
+.motivationCard {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.motivationContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.motivationQuote {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.motivationIcon {
+  font-size: 2rem;
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.4));
+}
+
+@media (max-width: 1280px) {
+  .container {
+    width: 280px;
+    min-width: 280px;
+    padding: 1.25rem 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    display: none;
+  }
+}

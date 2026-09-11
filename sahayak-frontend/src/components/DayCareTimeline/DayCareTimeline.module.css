@@ -1,0 +1,485 @@
+/* =============================================
+   DayCareTimeline — My Day Care Timeline
+   Full-featured, elderly-friendly daily event system
+   ============================================= */
+
+.timelineWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* ─── Section heading ─────────────────────────── */
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+/* ─── Current / Priority Event Card ─────────────── */
+.currentEventCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(59, 130, 246, 0.12) 100%);
+  border: 1.5px solid rgba(99, 102, 241, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+/* SOS / P0 priority override */
+.currentEventCard.prioritySOS {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.15) 100%);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* Overdue / P1 priority override */
+.currentEventCard.priorityOverdue {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.12) 100%);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+/* Pulse animation for current event */
+.currentEventCard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 60%);
+  animation: subtlePulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes subtlePulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.currentEventMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nowBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(99, 102, 241, 0.25);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.nowBadge.badgeSOS {
+  background: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.nowBadge.badgeOverdue {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.pulseDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+.eventTime {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.currentEventBody {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.eventIconLarge {
+  font-size: 2.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+.eventTextBlock {
+  flex: 1;
+}
+
+.eventTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.eventMessage {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.currentEventActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ─── Action Buttons ─────────────────────────── */
+.listenBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.07);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.listenBtn:hover, .listenBtn.active {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #a5b4fc;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionBtnPrimary {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.actionBtnPrimary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.actionBtnGreen {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.actionBtnGreen:hover {
+  transform: translateY(-1px);
+}
+
+.actionBtnBlue {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  color: white;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+.actionBtnRed {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+.actionBtnAmber {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* ─── Next Event Preview ─────────────────────── */
+.nextEventRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+}
+
+.nextLabel {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  min-width: 38px;
+}
+
+.nextEventIcon {
+  font-size: 1.3rem;
+}
+
+.nextEventInfo {
+  flex: 1;
+}
+
+.nextEventTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.nextEventTime {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ─── Daily Summary Bar ──────────────────────── */
+.dailySummaryBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.summaryChip {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+}
+
+.chipDone {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.chipCurrent {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+}
+
+.chipUpcoming {
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+}
+
+.chipMissed {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.hydrationChip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-left: auto;
+  color: var(--text-secondary);
+}
+
+.hydrationBar {
+  width: 60px;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.hydrationFill {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #6366f1);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* ─── Compact Timeline ───────────────────────── */
+.compactTimelineCard {
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+.compactTimelineHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  cursor: pointer;
+}
+
+.compactTimelineHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.chevron {
+  transition: transform 0.25s ease;
+  color: var(--text-muted);
+}
+
+.chevron.open {
+  transform: rotate(180deg);
+}
+
+.compactTimelineBody {
+  padding: 0 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.timelineRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+  cursor: default;
+}
+
+.timelineRow.rowCurrent {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.timelineRow.rowMissed {
+  background: rgba(245, 158, 11, 0.07);
+}
+
+.rowStatusIcon {
+  font-size: 0.9rem;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.rowTime {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 54px;
+}
+
+.rowEventIcon {
+  font-size: 1rem;
+}
+
+.rowTitle {
+  flex: 1;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.rowTitle.titleCurrent {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.rowTitle.titleDone {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+.rowTitle.titleMissed {
+  color: #fbbf24;
+}
+
+/* ─── Empty State ────────────────────────────── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.emptyStateIcon {
+  font-size: 3rem;
+  opacity: 0.4;
+}
+
+.emptyStateText {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.emptyStateLink {
+  font-size: 0.85rem;
+  color: var(--accent-color);
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+/* ─── Responsive ─────────────────────────────── */
+@media (max-width: 768px) {
+  .eventTitle {
+    font-size: 1.2rem;
+  }
+  .eventIconLarge {
+    font-size: 2.25rem;
+  }
+  .currentEventActions {
+    gap: 0.5rem;
+  }
+  .actionBtn, .listenBtn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  .dailySummaryBar {
+    gap: 0.6rem;
+  }
+}

@@ -1,0 +1,272 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String // Hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile?
+}
+
+model Profile {
+  id                 String             @id @default(uuid())
+  userId             String             @unique
+  firstName          String
+  lastName           String?
+  preferredName      String?
+  role               String             @default("elderly") // elderly, caregiver, family, healthcare, admin
+  avatarUrl          String?
+  languagePreference String             @default("en")
+  voiceLanguage      String?
+  voicePreference    String?
+  timezone           String             @default("UTC")
+  notificationPrefs  String             @default("{}") // JSON string
+  accessibilityPrefs String             @default("{}") // JSON string
+  gender             String             @default("neutral") // male, female, neutral
+  routinePreferences String             @default("[]") // JSON string of custom routine schedule
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Relations where this profile is the elderly user
+  familyMemberships    FamilyRelationship[] @relation("ElderlyToFamily")
+  caregiverAssignments CaregiverAssignment[]  @relation("ElderlyToCaregiver")
+  gameSessions         GameSession[]
+  reminders            Reminder[]
+  familyMemories       FamilyMemory[]       @relation("ElderlyToMemory")
+  conversationalMemories ConversationalMemory[] @relation("ElderlyToConversationalMemory")
+  
+  // Relations where this profile acts as family or caregiver or uploader
+  familyRoles          FamilyRelationship[] @relation("FamilyToElderly")
+  caregiverRoles       CaregiverAssignment[]  @relation("CaregiverToElderly")
+  uploadedMemories     FamilyMemory[]       @relation("UploaderToMemory")
+
+  sentMessages         Message[]            @relation("SentMessages")
+  receivedMessages     Message[]            @relation("ReceivedMessages")
+
+  trustedContacts      TrustedContact[]     @relation("ElderlyToTrustedContact")
+  helpRequestsCreated  HelpRequest[]        @relation("ElderlyToHelpRequest")
+  helpRequestsAssigned HelpRequest[]        @relation("CaregiverToHelpRequest")
+  challengeHistory     ChallengeHistory[]
+  callerCalls CallLog[] @relation("CallerCalls")
+  calleeCalls CallLog[] @relation("CalleeCalls")
+}
+
+model ConversationalMemory {
+  id          String   @id @default(uuid())
+  elderlyId   String
+  relationship String? // e.g., "Aunt", "Best Friend"
+  name         String? // e.g., "Sunita", "Ramesh"
+  detail       String // e.g., "Used to play cricket together"
+  approved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  elderly     Profile  @relation("ElderlyToConversationalMemory", fields: [elderlyId], references: [id], onDelete: Cascade)
+}
+
+model FamilyRelationship {
+  id                String   @id @default(uuid())
+  elderlyId         String
+  familyMemberId    String
+  relationshipType  String
+  canManageRoutines Boolean  @default(false)
+  canViewActivity   Boolean  @default(true)
+  canViewGameScores Boolean  @default(true)
+  canReceiveAlerts  Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  
+  elderly           Profile  @relation("ElderlyToFamily", fields: [elderlyId], references: [id], onDelete: Cascade)
+  familyMember      Profile  @relation("FamilyToElderly", fields: [familyMemberId], references: [id], onDelete: Cascade)
+}
+
+model CaregiverAssignment {
+  id                String   @id @default(uuid())
+  elderlyId         String
+  caregiverId       String
+  permissions       String   @default("{\"view_activity\": true, \"manage_routines\": true, \"manage_reminders\": true}")
+  createdAt         DateTime @default(now())
+  
+  elderly           Profile  @relation("ElderlyToCaregiver", fields: [elderlyId], references: [id], onDelete: Cascade)
+  caregiver         Profile  @relation("CaregiverToElderly", fields: [caregiverId], references: [id], onDelete: Cascade)
+}
+
+model Game {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  gameType    String
+  createdAt   DateTime      @default(now())
+  sessions    GameSession[]
+  challengeHistory ChallengeHistory[]
+}
+
+model GameSession {
+  id              String   @id @default(uuid())
+  userId          String
+  gameId          String
+  difficulty      Int      @default(1)
+  score           Int      @default(0)
+  attempts        Int      @default(1)
+  hintsUsed       Int      @default(0)
+  accuracy        Float?
+  durationSeconds Int?
+  completed       Boolean  @default(false)
+  syncedAt        DateTime?
+  createdAt       DateTime @default(now())
+  
+  user            Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game            Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+}
+
+model Reminder {
+  id                String   @id @default(uuid())
+  userId            String
+  title             String
+  type              String
+  scheduledTime     String   // Format "HH:MM"
+  daysOfWeek        String   @default("[1,2,3,4,5,6,7]") // Storing JSON array string due to sqlite limits
+  isActive          Boolean  @default(true)
+  escalationEnabled Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  
+  user              Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs              ReminderLog[]
+}
+
+model ReminderLog {
+  id          String   @id @default(uuid())
+  reminderId  String
+  status      String
+  loggedAt    DateTime @default(now())
+  
+  reminder    Reminder @relation(fields: [reminderId], references: [id], onDelete: Cascade)
+}
+
+model FamilyMemory {
+  id          String   @id @default(uuid())
+  elderlyId   String
+  uploaderId  String
+  title       String
+  description String?
+  mediaUrl    String
+  mediaType   String   @default("image")
+  dateOfMemory DateTime?
+  gameUsageAllowed Boolean @default(false)
+  createdAt   DateTime @default(now())
+  
+  elderly     Profile  @relation("ElderlyToMemory", fields: [elderlyId], references: [id], onDelete: Cascade)
+  uploader    Profile  @relation("UploaderToMemory", fields: [uploaderId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  senderId    String
+  receiverId  String
+  content     String
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  sender      Profile  @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    Profile  @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+model TrustedContact {
+  id                 String   @id @default(uuid())
+  elderlyId          String
+  name               String
+  relationship       String
+  phoneNumber        String
+  priority           Int      @default(0) // Higher number = higher priority
+  isPrimaryEmergency Boolean  @default(false)
+  createdAt          DateTime @default(now())
+
+  elderly            Profile  @relation("ElderlyToTrustedContact", fields: [elderlyId], references: [id], onDelete: Cascade)
+  helpRequests       HelpRequest[]
+}
+
+model CallLog {
+  id          String   @id @default(uuid())
+  callerId    String
+  calleeId    String
+  startedAt   DateTime @default(now())
+  endedAt     DateTime?
+  status      String   @default("INITIATED") // INITIATED, RINGING, CONNECTED, ENDED, FAILED
+  // Relations to profiles
+  caller      Profile  @relation("CallerCalls", fields: [callerId], references: [id], onDelete: Cascade)
+  callee      Profile  @relation("CalleeCalls", fields: [calleeId], references: [id], onDelete: Cascade)
+}
+
+
+model HelpRequest {
+  id              String    @id @default(uuid())
+  elderlyId       String
+  caregiverId     String?
+  contactId       String?
+  requestType     String    // e.g., 'assistance', 'unwell', 'routine', 'emergency', 'other'
+  message         String?
+  status          String    @default("CREATED") // CREATED, SENT, RECEIVED, ACKNOWLEDGED, RESOLVED, CANCELLED
+  syncStatus      String    @default("SYNCED") // OFFLINE_QUEUED, SYNCED
+  createdAt       DateTime  @default(now())
+  acknowledgedAt  DateTime?
+  resolvedAt      DateTime?
+  
+  elderly         Profile         @relation("ElderlyToHelpRequest", fields: [elderlyId], references: [id], onDelete: Cascade)
+  caregiver       Profile?        @relation("CaregiverToHelpRequest", fields: [caregiverId], references: [id], onDelete: SetNull)
+  contact         TrustedContact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  profileId String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+}
+
+model InAppNotification {
+  id          String   @id @default(uuid())
+  profileId   String
+  type        String   // e.g. 'GAME_COMPLETED', 'HELP_REQUEST'
+  title       String
+  body        String
+  actionUrl   String?
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model ChallengeHistory {
+  id             String   @id @default(uuid())
+  userId         String
+  gameId         String
+  challengeHash  String
+  challengeType  String
+  difficulty     Int
+  createdAt      DateTime @default(now())
+
+  user           Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game           Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([userId, gameId])
+}
+
+model GameContentPool {
+  id             String   @id @default(uuid())
+  gameType       String
+  challengeType  String
+  contentVersion Int      @default(1)
+  content        String   // JSON string of the question/story
+  difficulty     Int
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  
+  @@index([gameType, difficulty])
+}

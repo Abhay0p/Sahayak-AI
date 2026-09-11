@@ -1,0 +1,59 @@
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.gameInput {
+  width: 100%;
+  padding: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  border-radius: var(--radius-md, 12px);
+  /* Absolute High Contrast Colors to prevent Dark Mode Bleed */
+  background-color: #ffffff;
+  color: #111827;
+  border: 3px solid #d1d5db;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.gameInput::placeholder {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.gameInput:focus {
+  border-color: var(--primary-color, #3498db);
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.25);
+  transform: translateY(-2px);
+}
+
+.gameInput:disabled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.stateCorrect {
+  border-color: var(--success-color, #2ecc71);
+  background-color: #f0fdf4;
+}
+
+.stateIncorrect {
+  border-color: var(--danger-color, #e74c3c);
+  background-color: #fef2f2;
+}
+
+/* Specific styling for character/grid based inputs (Sudoku/Word Jumble) */
+.gameInput.gridCell {
+  padding: 0;
+  font-size: 1.5rem;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

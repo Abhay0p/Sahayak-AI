@@ -1,0 +1,412 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 800;
+}
+
+/* Next Activity Hero */
+.nextActivityCard {
+  background: linear-gradient(135deg, var(--accent-color), #2980b9);
+  color: white;
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.nextActivityTitle {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.9;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.nextActivityTime {
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: 0.9;
+}
+
+.nextActivityName {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 0.5rem;
+}
+
+.progressText {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Timeline Layout */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 130px; 
+  width: 4px;
+  background-color: var(--border-color);
+  z-index: 1;
+}
+
+.timelineItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.timelineItem:hover {
+  transform: translateX(4px);
+}
+
+.timeContainer {
+  width: 100px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.time {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.iconContainer {
+  background-color: var(--bg-color);
+  border: 4px solid var(--border-color);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px var(--bg-color);
+  z-index: 2;
+}
+
+.iconCompleted {
+  border-color: var(--success-color);
+  background-color: var(--success-color);
+}
+
+/* Cards */
+.card {
+  flex: 1;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.cardCompleted {
+  opacity: 0.6;
+  background-color: var(--bg-color);
+  border-style: dashed;
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cardIcon {
+  width: 48px;
+  height: 48px;
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--accent-color);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.statusText {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  border-radius: 8px;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.actionBtn:hover {
+  background: var(--border-color);
+}
+
+.completeBtn {
+  background: var(--bg-color);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.completeBtn:hover {
+  background: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+.completeBtnDone {
+  background: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+/* Modals */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modalContent {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.modalTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+/* HIGH CONTRAST INPUTS */
+.formGroup {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827; /* Hardcoded dark text for absolute visibility */
+  background-color: #f9fafb; /* Hardcoded light background */
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+}
+
+.select {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  background-color: #f9fafb;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.saveBtn {
+  flex: 1;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  flex: 1;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  width: 100%;
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--danger-color);
+  border: 1px dashed var(--danger-color);
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.deleteBtn:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--card-bg);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius-lg);
+}
+
+.emptyState h2 {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  color: var(--text-primary);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 20px;
+  }
+  
+  .timelineItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .timeContainer {
+    width: 100%;
+    text-align: left;
+    padding-left: 50px;
+  }
+  
+  .iconContainer {
+    position: absolute;
+    left: 8px;
+    top: 40px;
+  }
+  
+  .card {
+    width: 100%;
+    margin-left: 50px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  
+  .cardContent {
+    width: 100%;
+  }
+}

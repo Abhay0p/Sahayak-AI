@@ -1,0 +1,20 @@
+{
+  "name": "sahayak-backend",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "api-gateway",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "dev": "cross-env DATABASE_URL=\"file:C:/Users/HP/Desktop/SAHAYAK AI/sahayak-backend/packages/database/prisma/dev.db\" concurrently \"npm run dev -w api-gateway\" \"npm run dev -w services/auth-service\" \"npm run dev -w services/healthcare-service\" \"npm run dev -w services/game-service\" \"npm run dev -w services/ai-service\" \"npm run dev -w services/notification-service\"",
+    "build": "npm run build --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5",
+    "cross-env": "^10.1.0"
+  }
+}

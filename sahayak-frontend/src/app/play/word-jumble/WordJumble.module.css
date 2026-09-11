@@ -1,0 +1,98 @@
+.centerBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  min-height: 400px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hint {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.jumbledBox {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.jumbleChar {
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  background: var(--primary-color);
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  animation: float 2s infinite alternate;
+}
+
+.jumbleChar:nth-child(even) {
+  animation-delay: 0.5s;
+  background: var(--secondary-color);
+}
+
+.formBox {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.wordInput {
+  flex: 1;
+  font-size: 1.5rem;
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.wordInput:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.primaryBtn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 99px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.message {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.success {
+  color: var(--success-color);
+}
+
+.error {
+  color: var(--danger-color);
+}
+
+@keyframes float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}

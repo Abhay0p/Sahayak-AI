@@ -1,0 +1,116 @@
+/* src/app/family/styles.css */
+:root {
+  /* Color palette */
+  --primary-h: 210; /* hue for primary blue */
+  --primary-s: 60%;
+  --primary-l: 55%;
+  --accent-h: 160; /* teal */
+  --accent-s: 55%;
+  --accent-l: 45%;
+  --bg-color: hsl(210, 20%, 12%);
+  --card-bg: hsl(210, 20%, 18%);
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --border-color: rgba(255,255,255,0.1);
+  --radius-sm: 0.4rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 0.8rem;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.15);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.2);
+}
+
+/* Global resets for the family portal */
+body {
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+/* Card component */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Grid utilities */
+.grid-cols-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Header utilities */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.header .greeting {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.header .patient-info {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+/* Status badge */
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.status-badge .dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+}
+.status-badge .dot.online { background: #4caf50; }
+.status-badge .dot.offline { background: #f44336; }
+
+/* Button base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+.btn-primary {
+  background: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  color: white;
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-primary);
+}
+
+/* Responsive container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}

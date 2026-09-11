@@ -1,0 +1,92 @@
+.centerBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  min-height: 400px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.instruction {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.patternDisplay {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  align-items: center;
+  background: var(--bg-color);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+}
+
+.shape {
+  font-size: 3rem;
+}
+
+.questionMark {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed var(--primary-color);
+  border-radius: 50%;
+}
+
+.optionsGrid {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.optionBtn {
+  font-size: 3rem;
+  background: var(--bg-color);
+  border: 2px solid var(--border-color);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.optionBtn:hover {
+  transform: scale(1.1);
+  border-color: var(--primary-color);
+}
+
+.primaryBtn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 99px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.message {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.success {
+  color: var(--success-color);
+}
+
+.error {
+  color: var(--danger-color);
+}

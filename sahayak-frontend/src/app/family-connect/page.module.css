@@ -1,0 +1,450 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Family Connect — Premium CSS Module
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+.page {
+  min-height: 100vh;
+  padding: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+  color: white;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.backBtn:hover { background: rgba(255,255,255,0.13); }
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Tabs ───────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+}
+.tabActive {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+}
+
+/* ─── States ─────────────────────────────────────────────────────────────── */
+.loadingState,
+.emptyState,
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: rgba(255,255,255,0.4);
+}
+.emptyTitle { font-size: 1.1rem; font-weight: 700; color: rgba(255,255,255,0.6); }
+.emptySubtitle { font-size: 0.9rem; color: rgba(255,255,255,0.35); max-width: 340px; line-height: 1.5; }
+
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #a78bfa;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.primaryBtn {
+  padding: 0.65rem 1.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: none;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ─── Contacts grid ──────────────────────────────────────────────────────── */
+.contactsGrid { display: flex; flex-direction: column; gap: 1rem; }
+
+.contactCard {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 1.25rem;
+  padding: 1.1rem 1.25rem;
+  transition: background 0.2s;
+}
+.contactCard:hover { background: rgba(255,255,255,0.07); }
+
+.contactAvatar {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4c1d95, #1e40af);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.contactAvatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatarInitial { font-size: 1.5rem; font-weight: 700; color: white; }
+
+.contactInfo { flex: 1; min-width: 0; }
+.contactName { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.contactRelation { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+
+.contactActions { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+
+.actionBtn {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 2rem;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.actionBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+.callBtnAudio {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: white;
+}
+.callBtnAudio:hover:not(:disabled) { box-shadow: 0 4px 16px rgba(34,197,94,0.4); }
+.callBtnVideo {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  color: white;
+}
+.callBtnVideo:hover:not(:disabled) { box-shadow: 0 4px 16px rgba(59,130,246,0.4); }
+.msgBtn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+}
+.msgBtn:hover { background: rgba(255,255,255,0.16); }
+
+/* ─── Incoming call banner ───────────────────────────────────────────────── */
+.incomingCallBanner {
+  display: flex; align-items: center; gap: 1rem;
+  background: linear-gradient(135deg, #0f2027, #1a2e4a);
+  border: 2px solid #3b82f6;
+  border-radius: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: pulseBorder 1.5s infinite;
+}
+@keyframes pulseBorder {
+  0%,100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+  50% { box-shadow: 0 0 0 14px rgba(59,130,246,0); }
+}
+.incomingAvatar { font-size: 2.5rem; animation: ring 0.8s ease-in-out infinite alternate; }
+@keyframes ring { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+.incomingInfo { flex: 1; }
+.incomingName { font-size: 1.15rem; font-weight: 700; }
+.incomingSubtitle { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-top: 0.2rem; }
+.answerBtn {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  border: none; color: white; padding: 0.7rem 1.4rem;
+  border-radius: 2rem; cursor: pointer; font-weight: 700;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: transform 0.15s;
+}
+.answerBtn:hover { transform: scale(1.04); }
+.rejectBtn {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: linear-gradient(135deg, #b91c1c, #ef4444);
+  border: none; color: white; padding: 0.7rem 1.4rem;
+  border-radius: 2rem; cursor: pointer; font-weight: 700;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: transform 0.15s;
+}
+.rejectBtn:hover { transform: scale(1.04); }
+
+/* ─── Call Overlay ───────────────────────────────────────────────────────── */
+.callOverlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: #080808;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.remoteVideo { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.localVideo {
+  position: absolute; bottom: 8rem; right: 1.5rem;
+  width: 130px; height: 180px; border-radius: 1rem;
+  object-fit: cover; border: 3px solid rgba(255,255,255,0.3); z-index: 10;
+}
+.audioCallScreen {
+  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+  z-index: 5;
+}
+.audioAvatar {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: linear-gradient(135deg, #4c1d95, #1e40af);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; border: 4px solid rgba(255,255,255,0.2);
+}
+.audioAvatar img { width: 100%; height: 100%; object-fit: cover; }
+.audioAvatar span { font-size: 3rem; }
+.audioName { font-size: 1.6rem; font-weight: 700; }
+
+.callStatus {
+  position: absolute; top: 2rem; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.6); padding: 0.5rem 1.5rem; border-radius: 2rem;
+  font-size: 1rem; font-weight: 600; z-index: 10; backdrop-filter: blur(8px);
+}
+.callControls {
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 1.25rem; z-index: 10;
+}
+.ctrlBtn {
+  width: 58px; height: 58px; border-radius: 50%;
+  background: rgba(255,255,255,0.14); border: 2px solid rgba(255,255,255,0.18);
+  color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px); transition: background 0.2s;
+}
+.ctrlBtn:hover { background: rgba(255,255,255,0.24); }
+.ctrlBtnActive { background: rgba(239,68,68,0.45) !important; border-color: #ef4444 !important; }
+.hangUpBtn {
+  width: 66px; height: 66px; border-radius: 50%;
+  background: linear-gradient(135deg, #b91c1c, #ef4444);
+  border: none; color: white; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 24px rgba(239,68,68,0.55); transition: transform 0.15s;
+}
+.hangUpBtn:hover { transform: scale(1.08); }
+
+/* ─── Messages ───────────────────────────────────────────────────────────── */
+.messagesSection { display: flex; flex-direction: column; height: calc(100vh - 200px); }
+
+.conversationView {
+  display: flex; flex-direction: column; height: 100%;
+  background: rgba(255,255,255,0.03); border-radius: 1.25rem;
+  border: 1px solid rgba(255,255,255,0.07); overflow: hidden;
+}
+.conversationHeader {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.04);
+}
+.conversationName { font-size: 1rem; font-weight: 700; }
+
+.messagesList {
+  flex: 1; overflow-y: auto; padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.messageBubble { max-width: 75%; display: flex; flex-direction: column; }
+.myMessage { align-self: flex-end; align-items: flex-end; }
+.theirMessage { align-self: flex-start; align-items: flex-start; }
+
+.messageContent {
+  padding: 0.7rem 1rem; border-radius: 1.2rem; font-size: 0.95rem; line-height: 1.45;
+}
+.myMessage .messageContent {
+  background: linear-gradient(135deg, #7c3aed, #a855f7); color: white;
+  border-bottom-right-radius: 0.25rem;
+}
+.theirMessage .messageContent {
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9);
+  border-bottom-left-radius: 0.25rem;
+}
+.messageTime { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 0.25rem; padding: 0 0.25rem; }
+
+.messageInputRow {
+  display: flex; gap: 0.75rem; padding: 0.9rem 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.messageInput {
+  flex: 1; padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.75rem; color: white; font-size: 0.95rem;
+  font-family: 'Inter', sans-serif; outline: none;
+  transition: border-color 0.2s;
+}
+.messageInput:focus { border-color: #a855f7; }
+.messageInput::placeholder { color: rgba(255,255,255,0.3); }
+.sendBtn {
+  padding: 0.75rem 1rem; background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: none; color: white; border-radius: 0.75rem; cursor: pointer;
+  display: flex; align-items: center; transition: opacity 0.2s;
+}
+.sendBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ─── Photos ─────────────────────────────────────────────────────────────── */
+.photosSection { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.uploadArea {
+  border: 2px dashed rgba(168,85,247,0.4); border-radius: 1.25rem;
+  padding: 2.5rem; text-align: center; cursor: pointer;
+  transition: all 0.2s; background: rgba(168,85,247,0.04);
+}
+.uploadArea:hover { border-color: #a855f7; background: rgba(168,85,247,0.09); }
+.uploadIcon { margin: 0 auto 1rem; color: #a855f7; }
+.uploadText { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; }
+.uploadSubtext { font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+
+.uploadPreview {
+  display: flex; flex-direction: column; align-items: center; gap: 0.9rem;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 1.25rem; padding: 1.5rem;
+}
+.previewImg { width: 100%; max-height: 300px; object-fit: contain; border-radius: 0.75rem; }
+.captionInput {
+  width: 100%; padding: 0.7rem 1rem;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.75rem; color: white; font-size: 0.9rem;
+  font-family: 'Inter', sans-serif; outline: none; box-sizing: border-box;
+}
+.captionInput::placeholder { color: rgba(255,255,255,0.3); }
+.captionInput:focus { border-color: #a855f7; }
+
+.uploadActions { display: flex; gap: 0.75rem; width: 100%; }
+.cancelUploadBtn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  padding: 0.7rem; border-radius: 0.75rem;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+  color: white; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif;
+}
+.confirmUploadBtn {
+  flex: 2; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  padding: 0.7rem; border-radius: 0.75rem;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: none; color: white; cursor: pointer; font-weight: 700;
+  font-family: 'Inter', sans-serif;
+}
+.confirmUploadBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.photosGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1rem;
+}
+.photoCard {
+  position: relative; border-radius: 1rem; overflow: hidden;
+  aspect-ratio: 1; cursor: pointer; transition: transform 0.2s;
+}
+.photoCard:hover { transform: scale(1.03); }
+.photoCard:hover .photoOverlay { opacity: 1; }
+.photoImg { width: 100%; height: 100%; object-fit: cover; }
+.photoOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 55%);
+  opacity: 0; transition: opacity 0.2s;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0.75rem;
+}
+.photoTitle { font-size: 0.85rem; font-weight: 700; color: white; margin-bottom: 0.15rem; }
+.photoCaption { font-size: 0.75rem; color: rgba(255,255,255,0.65); }
+.photoMeta { font-size: 0.7rem; color: rgba(255,255,255,0.45); margin-top: 0.2rem; }
+.deletePhotoBtn {
+  background: rgba(239,68,68,0.75); border: none; color: white;
+  width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* ─── Call History ───────────────────────────────────────────────────────── */
+.callHistorySection { display: flex; flex-direction: column; gap: 0.9rem; }
+.callLogCard {
+  display: flex; align-items: center; gap: 1rem;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 1rem; padding: 1rem 1.25rem;
+}
+.callLogInfo { flex: 1; }
+.callLogName { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+.callLogMeta { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+.callLogTime { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 0.2rem; }
+
+/* ─── Lightbox ───────────────────────────────────────────────────────────── */
+.lightbox {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.95);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1.5rem; cursor: pointer;
+}
+.lightboxClose {
+  position: absolute; top: 1.25rem; right: 1.25rem;
+  background: rgba(255,255,255,0.1); border: none; color: white;
+  padding: 0.6rem; border-radius: 50%; cursor: pointer; display: flex;
+}
+.lightboxNav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.1); border: none; color: white;
+  padding: 0.75rem; border-radius: 50%; cursor: pointer; display: flex;
+  transition: background 0.2s;
+}
+.lightboxNav:hover { background: rgba(255,255,255,0.2); }
+.lightboxImg {
+  max-width: 90vw; max-height: 72vh; object-fit: contain;
+  border-radius: 0.75rem; box-shadow: 0 24px 60px rgba(0,0,0,0.7); cursor: default;
+}
+.lightboxInfo { margin-top: 1.25rem; text-align: center; cursor: default; }
+.lightboxCaption { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+.lightboxSubCaption { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+.lightboxMeta { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 0.3rem; }
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .page { padding: 1rem; }
+  .contactCard { flex-direction: column; align-items: flex-start; }
+  .contactActions { width: 100%; justify-content: flex-start; }
+  .actionBtn { flex: 1; justify-content: center; }
+  .photosGrid { grid-template-columns: repeat(2, 1fr); }
+  .incomingCallBanner { flex-wrap: wrap; }
+  .tabs { gap: 0.35rem; }
+  .tab { padding: 0.5rem 0.85rem; font-size: 0.78rem; }
+}

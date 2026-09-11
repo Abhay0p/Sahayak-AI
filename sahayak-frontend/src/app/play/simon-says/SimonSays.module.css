@@ -1,0 +1,76 @@
+.centerBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  min-height: 400px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.simonBoard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background: var(--bg-color);
+  padding: 1rem;
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  box-shadow: var(--shadow-md);
+}
+
+.simonBtn {
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.1s;
+}
+
+.simonBtn:active {
+  transform: scale(0.95);
+}
+
+.red {
+  background: #ef4444;
+  border-top-left-radius: 100%;
+}
+
+.blue {
+  background: #3b82f6;
+  border-top-right-radius: 100%;
+}
+
+.green {
+  background: #22c55e;
+  border-bottom-left-radius: 100%;
+}
+
+.yellow {
+  background: #eab308;
+  border-bottom-right-radius: 100%;
+}
+
+.active {
+  opacity: 1;
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+  filter: brightness(1.5);
+}
+
+.primaryBtn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 99px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 2rem;
+}

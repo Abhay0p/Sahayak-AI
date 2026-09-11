@@ -1,0 +1,79 @@
+.gameBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 99px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  min-height: 56px;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .gameBtn {
+    width: auto;
+    min-width: 200px;
+  }
+}
+
+.gameBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.gameBtn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.gameBtn:focus-visible {
+  box-shadow: 0 0 0 4px var(--bg-color), 0 0 0 8px var(--primary-color);
+}
+
+/* Variants */
+.primary {
+  background-color: var(--primary-color, #3498db);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(52, 152, 219, 0.3);
+}
+
+.primary:hover:not(:disabled) {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.secondary {
+  background-color: transparent;
+  color: var(--primary-color, #3498db);
+  border: 2px solid var(--primary-color, #3498db);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.success {
+  background-color: var(--success-color, #2ecc71);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(46, 204, 113, 0.3);
+}
+
+.success:hover:not(:disabled) {
+  background-color: #27ae60;
+}
+
+.danger {
+  background-color: var(--danger-color, #e74c3c);
+  color: #ffffff;
+}
+
+.danger:hover:not(:disabled) {
+  background-color: #c0392b;
+}

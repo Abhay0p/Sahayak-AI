@@ -1,0 +1,68 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 2px solid var(--color-primary-light);
+  padding-bottom: var(--spacing-md);
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-main);
+}
+
+.optionsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.optionBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background-color: var(--color-surface);
+  border: 2px solid #e0e0e0;
+  border-radius: var(--border-radius-md);
+  text-align: left;
+  font-size: inherit;
+  color: var(--color-text-main);
+  transition: all 0.2s;
+  min-height: 80px;
+}
+
+.optionBtn:hover {
+  background-color: var(--color-primary-light);
+}
+
+.optionBtn.active {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  border-width: 4px;
+}
+
+.checkIcon {
+  color: var(--color-primary);
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}

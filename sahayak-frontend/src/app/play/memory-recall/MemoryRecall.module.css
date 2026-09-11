@@ -1,0 +1,78 @@
+.centerBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  min-height: 400px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.instruction {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.bigNumber {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: 0.5rem;
+  color: var(--primary-color);
+  animation: pulse 1s infinite alternate;
+}
+
+.numberInput {
+  font-size: 2rem;
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 2rem;
+  outline: none;
+}
+
+.numberInput:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.primaryBtn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 99px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.correctMessage {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--success-color);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
