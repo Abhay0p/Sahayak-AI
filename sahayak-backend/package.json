@@ -8,13 +8,24 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "docker-compose up -d",
+    "start": "cross-env IS_MONOLITH=true tsx server.ts",
     "stop": "docker-compose down",
-    "dev": "cross-env DATABASE_URL=\"file:C:/Users/HP/Desktop/SAHAYAK AI/sahayak-backend/packages/database/prisma/dev.db\" concurrently \"npm run dev -w api-gateway\" \"npm run dev -w services/auth-service\" \"npm run dev -w services/healthcare-service\" \"npm run dev -w services/game-service\" \"npm run dev -w services/ai-service\" \"npm run dev -w services/notification-service\"",
+    "dev": "cross-env IS_MONOLITH=true tsx watch server.ts",
     "build": "npm run build --workspaces --if-present"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
     "concurrently": "^10.0.5",
-    "cross-env": "^10.1.0"
+    "cross-env": "^10.1.0",
+    "tsx": "^4.23.13"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "morgan": "^1.12.1",
+    "socket.io": "^4.8.3"
   }
 }

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { useAuth } from '@/components/AuthProvider/AuthProvider';
 import { useUserProfile } from '@/components/UserProfileProvider/UserProfileProvider';
-import { Activity, AlertTriangle, Users, HeartPulse, Brain, Bell, ArrowRight, User } from 'lucide-react';
+import { Activity, AlertTriangle, Users, HeartPulse, Brain, Bell, ArrowRight, User, CheckCircle2, Clock, Calendar } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/apiClient';
 
@@ -27,12 +27,12 @@ export default function CaregiverPortal() {
 
   if (isLoading && session.status === 'authenticated') {
     return (
-      <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
+      <div className="flex min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)]">
         <Sidebar />
-        <main style={{ flex: 1, padding: '2rem 3rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-             <Activity className="animate-spin" size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
-             <p>Loading your dashboard...</p>
+        <main className="flex-1 p-8 flex justify-center items-center">
+          <div className="text-center text-white/50">
+             <Activity className="animate-spin mx-auto mb-4" size={48} />
+             <p className="text-lg font-medium">Loading your dashboard...</p>
           </div>
         </main>
       </div>
@@ -41,14 +41,14 @@ export default function CaregiverPortal() {
 
   if (error) {
     return (
-      <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
+      <div className="flex min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)]">
         <Sidebar />
-        <main style={{ flex: 1, padding: '2rem 3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-          <AlertTriangle size={64} color="var(--danger-color)" style={{ marginBottom: '1rem' }} />
-          <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Failed to load dashboard</h2>
+        <main className="flex-1 p-8 flex flex-col justify-center items-center text-center">
+          <AlertTriangle size={64} className="text-red-500 mb-4" />
+          <h2 className="text-2xl font-bold mb-4">Failed to load dashboard</h2>
           <button 
             onClick={() => window.location.reload()}
-            style={{ padding: '0.75rem 1.5rem', background: 'var(--accent-color)', color: 'white', borderRadius: 'var(--radius-md)', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+            className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition"
           >
             Try Again
           </button>
@@ -57,103 +57,119 @@ export default function CaregiverPortal() {
     );
   }
 
-  const { totalAssigned = 0, totalTasksToday = 0, totalTasksCompleted = 0, totalActiveHelpRequests = 0, requiringAttention = 0, patients = [] } = caregiverData || {};
+  const { totalAssigned = 0, totalTasksToday = 0, totalTasksCompleted = 0, totalActiveHelpRequests = 0, requiringAttention = 0, appointmentsToday = 0, patients = [] } = caregiverData || {};
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-color)', color: 'var(--text-primary)' }}>
+    <div className="flex min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)]">
       <Sidebar />
-      <main style={{ flex: 1, padding: '2rem 3rem', overflowY: 'auto' }}>
-        <header style={{ marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>{greetingTime}, {caregiverName}</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Your Care Coordination Dashboard</p>
+      <main className="flex-1 p-8 overflow-y-auto">
+        <header className="mb-10">
+          <h1 className="text-4xl font-bold mb-2 tracking-tight">{greetingTime}, <span className="text-purple-400">{caregiverName}</span></h1>
+          <p className="text-white/60 text-lg">Your Care Coordination Dashboard</p>
         </header>
 
         {/* Summary Stats */}
-        <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
-          <div style={{ flex: 1, minWidth: '150px', background: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase' }}>Assigned Patients</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: 800, marginTop: 'auto' }}>{totalAssigned}</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-10">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col">
+            <h3 className="text-white/50 text-sm font-semibold uppercase tracking-wider mb-2 flex items-center gap-2"><Users size={16} /> Assigned</h3>
+            <p className="text-4xl font-bold mt-auto">{totalAssigned}</p>
           </div>
-          <div style={{ flex: 1, minWidth: '150px', background: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase' }}>Tasks Today</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: 800, marginTop: 'auto' }}>{totalTasksToday}</p>
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col">
+            <h3 className="text-white/50 text-sm font-semibold uppercase tracking-wider mb-2 flex items-center gap-2"><Clock size={16} /> Tasks Today</h3>
+            <p className="text-4xl font-bold mt-auto">{totalTasksToday}</p>
           </div>
-          <div style={{ flex: 1, minWidth: '150px', background: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase' }}>Completed</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: 800, marginTop: 'auto', color: 'var(--success-color)' }}>{totalTasksCompleted}</p>
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col">
+            <h3 className="text-white/50 text-sm font-semibold uppercase tracking-wider mb-2 flex items-center gap-2"><CheckCircle2 size={16} /> Completed</h3>
+            <p className="text-4xl font-bold mt-auto text-green-400">{totalTasksCompleted}</p>
           </div>
-          <div style={{ flex: 1, minWidth: '150px', background: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase' }}>Needs Attention</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: 800, marginTop: 'auto', color: requiringAttention > 0 ? 'var(--warning-color)' : 'var(--text-primary)' }}>{requiringAttention}</p>
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col">
+            <h3 className="text-white/50 text-sm font-semibold uppercase tracking-wider mb-2 flex items-center gap-2"><Calendar size={16} /> Appointments</h3>
+            <p className="text-4xl font-bold mt-auto text-blue-400">{appointmentsToday}</p>
           </div>
-          <div style={{ flex: 1, minWidth: '150px', background: 'var(--card-bg)', border: requiringAttention > 0 ? '2px solid var(--danger-color)' : '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ color: requiringAttention > 0 ? 'var(--danger-color)' : 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase' }}>Active SOS / Help</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: 800, marginTop: 'auto', color: totalActiveHelpRequests > 0 ? 'var(--danger-color)' : 'var(--text-primary)' }}>{totalActiveHelpRequests}</p>
+          <div className={`bg-white/5 backdrop-blur-md rounded-2xl p-6 flex flex-col ${totalActiveHelpRequests > 0 ? 'border-2 border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'border border-white/10'}`}>
+            <h3 className={`text-sm font-semibold uppercase tracking-wider mb-2 flex items-center gap-2 ${totalActiveHelpRequests > 0 ? 'text-red-400' : 'text-white/50'}`}>
+              <AlertTriangle size={16} /> SOS / Help
+            </h3>
+            <p className={`text-4xl font-bold mt-auto ${totalActiveHelpRequests > 0 ? 'text-red-400' : 'text-white'}`}>{totalActiveHelpRequests}</p>
           </div>
         </div>
 
-        <h2 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', fontWeight: 700 }}>Assigned Patients</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold flex items-center gap-2"><Users className="text-purple-400" /> Assigned Patients</h2>
+        </div>
 
         {patients.length === 0 ? (
-          <div style={{ padding: '4rem 2rem', textAlign: 'center', background: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)' }}>
-             <Users size={64} style={{ margin: '0 auto 1rem', color: 'var(--text-secondary)', opacity: 0.5 }} />
-             <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>No assigned patients</h2>
-             <p style={{ color: 'var(--text-secondary)' }}>You do not have any patients assigned to you yet.</p>
+          <div className="py-16 text-center bg-white/5 border border-white/10 rounded-2xl">
+             <Users size={64} className="mx-auto mb-4 text-white/20" />
+             <h2 className="text-2xl font-semibold mb-2">No assigned patients</h2>
+             <p className="text-white/50">You do not have any patients assigned to you yet.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {patients.map((p: any) => (
-              <div key={p.id} style={{ background: 'var(--card-bg)', border: p.statusColor === 'danger' ? '2px solid var(--danger-color)' : p.statusColor === 'warning' ? '2px solid var(--warning-color)' : '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+              <div key={p.id} className={`group bg-white/5 backdrop-blur-md rounded-2xl p-6 flex flex-col transition-all hover:bg-white/10 ${p.statusColor === 'danger' ? 'border-2 border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]' : p.statusColor === 'warning' ? 'border-2 border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.1)]' : 'border border-white/10'}`}>
+                <div className="flex items-center gap-4 mb-6">
                   {p.avatarUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.avatarUrl} alt={p.name} style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover' }} />
+                    <img src={p.avatarUrl} alt={p.name} className="w-16 h-16 rounded-full object-cover border-2 border-white/10" />
                   ) : (
-                    <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--accent-color)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white border-2 border-white/10">
                       <User size={32} />
                     </div>
                   )}
                   <div>
-                    <h3 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{p.name}</h3>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', background: 'var(--bg-color)', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
-                      {p.languagePreference === 'en' ? 'English' : p.languagePreference.toUpperCase()}
-                    </span>
+                    <h3 className="text-xl font-bold">{p.name}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs font-medium text-white/60 bg-black/20 px-2 py-1 rounded-md">
+                        {p.languagePreference === 'en' ? 'English' : p.languagePreference.toUpperCase()}
+                      </span>
+                      {p.statusColor === 'danger' && <span className="text-xs font-bold text-red-400 bg-red-400/10 px-2 py-1 rounded-md flex items-center gap-1"><AlertTriangle size={12}/> SOS</span>}
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Today's Tasks</span>
-                    <span style={{ fontWeight: 600 }}>{p.tasksCompleted} / {p.tasksToday}</span>
+                <div className="mb-6 bg-black/20 rounded-xl p-4">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-white/60 font-medium">Today's Tasks</span>
+                    <span className="font-bold">{p.tasksCompleted} / {p.tasksToday}</span>
                   </div>
-                  {p.tasksToday > 0 && (
-                    <div style={{ width: '100%', height: '6px', background: 'var(--bg-color)', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${(p.tasksCompleted / p.tasksToday) * 100}%`, background: p.statusColor === 'danger' ? 'var(--danger-color)' : p.tasksCompleted === p.tasksToday ? 'var(--success-color)' : 'var(--accent-color)' }} />
+                  {p.tasksToday > 0 ? (
+                    <div className="w-full h-2 bg-black/40 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full transition-all duration-500 ${p.statusColor === 'danger' ? 'bg-red-500' : p.tasksCompleted === p.tasksToday ? 'bg-green-500' : 'bg-purple-500'}`} 
+                        style={{ width: `${(p.tasksCompleted / p.tasksToday) * 100}%` }} 
+                      />
                     </div>
+                  ) : (
+                     <div className="text-xs text-white/40 italic">No tasks scheduled today</div>
                   )}
                 </div>
 
                 {p.alerts && p.alerts.length > 0 && (
-                  <div style={{ background: 'rgba(231, 76, 60, 0.1)', borderLeft: '4px solid var(--danger-color)', padding: '0.75rem 1rem', borderRadius: '4px', marginBottom: '1.5rem' }}>
-                    <p style={{ color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Bell size={16} /> Attention Required
+                  <div className="bg-red-500/10 border-l-4 border-red-500 p-3 rounded-r-lg mb-6">
+                    <p className="text-red-400 font-bold text-sm flex items-center gap-2 mb-1">
+                      <Bell size={14} /> Attention Required
                     </p>
-                    <p style={{ color: 'var(--text-primary)', fontSize: '0.85rem', marginTop: '0.25rem' }}>{p.alerts[0]}</p>
+                    <p className="text-red-200 text-sm leading-snug">{p.alerts[0]}</p>
                   </div>
                 )}
                 
                 {p.missedTasks > 0 && p.alerts.length === 0 && (
-                  <div style={{ background: 'rgba(241, 196, 15, 0.1)', borderLeft: '4px solid var(--warning-color)', padding: '0.75rem 1rem', borderRadius: '4px', marginBottom: '1.5rem' }}>
-                    <p style={{ color: 'var(--warning-color)', fontWeight: 600, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <AlertTriangle size={16} /> Missed Tasks
+                  <div className="bg-yellow-500/10 border-l-4 border-yellow-500 p-3 rounded-r-lg mb-6">
+                    <p className="text-yellow-400 font-bold text-sm flex items-center gap-2 mb-1">
+                      <AlertTriangle size={14} /> Missed Tasks
                     </p>
-                    <p style={{ color: 'var(--text-primary)', fontSize: '0.85rem', marginTop: '0.25rem' }}>{p.missedTasks} routines appear missed.</p>
+                    <p className="text-yellow-200 text-sm leading-snug">{p.missedTasks} routines appear missed.</p>
                   </div>
                 )}
 
-                <Link href={`/caregiver/patients/${p.id}`} style={{ marginTop: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', width: '100%', padding: '0.75rem', background: 'var(--bg-color)', color: 'var(--text-primary)', textDecoration: 'none', borderRadius: 'var(--radius-md)', fontWeight: 600, border: '1px solid var(--border-color)' }}>
-                  View Patient <ArrowRight size={18} />
-                </Link>
+                <div className="mt-auto pt-4 flex gap-2">
+                  <Link 
+                    href={`/caregiver/patients/${p.id}`} 
+                    className="flex-1 bg-white/10 hover:bg-purple-600 text-white py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors border border-white/5"
+                  >
+                    View Details <ArrowRight size={18} />
+                  </Link>
+                </div>
               </div>
             ))}
           </div>

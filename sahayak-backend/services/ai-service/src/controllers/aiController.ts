@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { GoogleGenerativeAI, Type } from '@google/generative-ai';
+import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 
 const API_KEY = process.env.GEMINI_API_KEY || '';
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -49,19 +49,19 @@ RESPONSE RULES:
 - Be warm, encouraging, and patient — the user is elderly.`;
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-3.5-flash',
       systemInstruction,
       generationConfig: {
         responseMimeType: 'application/json',
         responseSchema: {
-          type: Type.OBJECT,
+          type: SchemaType.OBJECT,
           properties: {
             intent: {
-              type: Type.STRING,
+              type: SchemaType.STRING,
               description: 'The classified intent from the INTENT OPTIONS list above.'
             },
             response: {
-              type: Type.STRING,
+              type: SchemaType.STRING,
               description: 'Your verbal response back to the user, strictly in their requested language. Max 3 sentences.'
             }
           },

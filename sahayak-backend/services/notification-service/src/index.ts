@@ -8,11 +8,11 @@ import { prisma } from '@sahayak/database';
 
 dotenv.config();
 
-const app = express();
-const server = http.createServer(app);
+export const app = express();
+export const server = http.createServer(app);
 const PORT = process.env.PORT || 8005;
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: { origin: '*', methods: ['GET', 'POST', 'PATCH', 'DELETE'] }
 });
 
@@ -297,6 +297,8 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`✅ Notification Service running on http://localhost:${PORT}`);
-});
+if (!process.env.IS_MONOLITH) {
+  server.listen(PORT, () => {
+    console.log(`✅ Notification Service running on http://localhost:${PORT}`);
+  });
+}

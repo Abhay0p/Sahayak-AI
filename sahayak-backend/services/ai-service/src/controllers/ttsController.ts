@@ -1,18 +1,16 @@
 import { Request, Response } from 'express';
-import textToSpeech from '@google-cloud/text-to-speech';
+import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 
-let client: textToSpeech.TextToSpeechClient | null = null;
+let client: TextToSpeechClient | null = null;
 try {
-  let credentials;
   if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     try {
-      credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      client = new TextToSpeechClient({ credentials });
     } catch (e) {
       console.warn('Invalid JSON in GOOGLE_APPLICATION_CREDENTIALS_JSON');
     }
   }
-
-  client = new textToSpeech.TextToSpeechClient(credentials ? { credentials } : undefined);
 } catch (e) {
   console.warn('Google Cloud TTS client not initialized. Check credentials.');
 }

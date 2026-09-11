@@ -71,13 +71,14 @@ export const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen
     setErrorMsg(null);
     setTranscript('');
     setIsListening(true);
-    
-    // Try to use MediaRecorder -> Backend STT first if full support is expected
-    if (config?.sttSupport === 'FULL' && navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+    // Swap logic to use Browser Native STT first for Voice Activity Detection
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      startBrowserRecognition();
+    } else if (navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
       startMediaRecorder();
     } else {
-      // Fallback to browser native
-      startBrowserRecognition();
+      setErrorMsg(t('voice.unavailable', 'Voice input is currently unavailable in this browser. Please type or use buttons.'));
     }
   };
 
@@ -221,13 +222,11 @@ export const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({ isOpen
     
     try {
       // We pass the transcript to the AI backend to parse intent AND generate the response
-      const res = await apiClient('/api/voice-chat', {
+      const data = await apiClient('/api/voice-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ transcript: speechText, language: language, timelineContext })
       });
-      
-      const data = await res.json();
       
       let responseText = '';
       if (data.success) {

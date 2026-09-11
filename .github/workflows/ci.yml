@@ -1,0 +1,60 @@
+name: Sahayak AI CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: |
+          sahayak-frontend/package-lock.json
+          sahayak-backend/package-lock.json
+
+    - name: Install Frontend Dependencies
+      working-directory: ./sahayak-frontend
+      run: npm ci
+
+    - name: Install Backend Dependencies
+      working-directory: ./sahayak-backend
+      run: npm ci
+
+    - name: Generate Prisma Client (Backend)
+      working-directory: ./sahayak-backend
+      run: npx prisma generate
+      env:
+        DATABASE_URL: "file:./dev.db"
+
+    - name: Type Check (Frontend)
+      working-directory: ./sahayak-frontend
+      run: npx tsc --noEmit
+
+    - name: Lint (Frontend)
+      working-directory: ./sahayak-frontend
+      run: npm run lint
+
+    - name: Build (Frontend)
+      working-directory: ./sahayak-frontend
+      run: npm run build
+      env:
+        # Provide safe placeholder variables so the build succeeds
+        NEXT_PUBLIC_APP_NAME: "Sahayak AI CI"
+        NEXT_PUBLIC_API_URL: "http://localhost:8000"
+        NEXT_PUBLIC_SOCKET_URL: "http://localhost:8005"
+        NEXT_PUBLIC_SUPABASE_URL: "https://ci-test.supabase.co"
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: "ci-test-key"
+        GEMINI_API_KEY: "ci-test-key"
+        AI_API_KEY: "ci-test-key"
+        JWT_SECRET: "ci-test-secret"

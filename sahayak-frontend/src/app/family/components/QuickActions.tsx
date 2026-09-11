@@ -4,9 +4,19 @@ import SummaryCard from '@/app/family/components/SummaryCard';
 
 interface QuickActionsProps {
   onCallClick?: () => void;
+  onMessageClick?: () => void;
+  onVoiceMessageClick?: () => void;
+  onMemoryClick?: () => void;
+  onScheduleClick?: () => void;
 }
 
-export default function QuickActions({ onCallClick }: QuickActionsProps) {
+export default function QuickActions({ 
+  onCallClick,
+  onMessageClick,
+  onVoiceMessageClick,
+  onMemoryClick,
+  onScheduleClick
+}: QuickActionsProps) {
   const actions = [
     { id: 'call', icon: <Phone size={20} />, label: 'Call', color: 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30' },
     { id: 'message', icon: <MessageCircle size={20} />, label: 'Message', color: 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30' },
@@ -16,9 +26,11 @@ export default function QuickActions({ onCallClick }: QuickActionsProps) {
   ];
 
   const handleActionClick = (id: string) => {
-    if (id === 'call' && onCallClick) {
-      onCallClick();
-    }
+    if (id === 'call' && onCallClick) onCallClick();
+    if (id === 'message' && onMessageClick) onMessageClick();
+    if (id === 'voicemessage' && onVoiceMessageClick) onVoiceMessageClick();
+    if (id === 'memory' && onMemoryClick) onMemoryClick();
+    if (id === 'schedule' && onScheduleClick) onScheduleClick();
   };
 
   return (

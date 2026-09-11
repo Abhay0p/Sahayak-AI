@@ -27,12 +27,18 @@ export const getDashboard = async (req: Request, res: Response) => {
     }
 
     // Fetch raw patient profiles
-    // Both healthcare and caregiver: only assigned patients
-    const assignments = await prisma.caregiverAssignment.findMany({
-      where: { caregiverId: user.profileId },
-      include: { elderly: true },
-    });
-    let patientProfiles = assignments.map((a: any) => a.elderly);
+    let patientProfiles = [];
+    if (user.role === 'healthcare') {
+      patientProfiles = await prisma.profile.findMany({
+        where: { role: 'elderly' }
+      });
+    } else {
+      const assignments = await prisma.caregiverAssignment.findMany({
+        where: { caregiverId: user.profileId },
+        include: { elderly: true },
+      });
+      patientProfiles = assignments.map((a: any) => a.elderly);
+    }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -205,11 +211,13 @@ export const getPatientById = async (req: Request, res: Response) => {
 
     const { patientId } = req.params;
 
-    const assignment = await prisma.caregiverAssignment.findFirst({
-      where: { caregiverId: user.profileId, elderlyId: patientId },
-    });
-    if (!assignment) {
-      return res.status(403).json({ error: 'Not authorized to view this patient' });
+    if (user.role === 'caregiver') {
+      const assignment = await prisma.caregiverAssignment.findFirst({
+        where: { caregiverId: user.profileId, elderlyId: patientId },
+      });
+      if (!assignment) {
+        return res.status(403).json({ error: 'Not authorized to view this patient' });
+      }
     }
 
     const patient = await prisma.profile.findUnique({

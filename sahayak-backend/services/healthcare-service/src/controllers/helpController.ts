@@ -97,3 +97,30 @@ export const createHelpRequest = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const updateHelpRequest = async (req: Request, res: Response) => {
+  try {
+    const user = getUserFromHeader(req);
+    if (!user) return res.status(401).json({ error: 'Unauthorized' });
+    if (user.role !== 'caregiver' && user.role !== 'healthcare') return res.status(403).json({ error: 'Forbidden' });
+
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const request = await prisma.helpRequest.findUnique({ where: { id } });
+    if (!request) return res.status(404).json({ error: 'Not found' });
+
+    if (user.role === 'caregiver' && request.caregiverId !== user.profileId) {
+      return res.status(403).json({ error: 'Not authorized' });
+    }
+
+    const updated = await prisma.helpRequest.update({
+      where: { id },
+      data: { status }
+    });
+
+    return res.status(200).json({ success: true, helpRequest: updated });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};

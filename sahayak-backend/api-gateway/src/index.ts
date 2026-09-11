@@ -39,6 +39,7 @@ app.use('/api/adaptive-difficulty', proxy(GAME_SERVICE_URL, proxyOptions));
 app.use('/api/ai', proxy(AI_SERVICE_URL, proxyOptions));
 app.use('/api/voice-chat', proxy(AI_SERVICE_URL, proxyOptions));
 app.use('/api/tts', proxy(AI_SERVICE_URL, proxyOptions));
+app.use('/api/stt', proxy(AI_SERVICE_URL, proxyOptions));
 app.use('/api/memory-assistant', proxy(AI_SERVICE_URL, proxyOptions));
 
 app.use('/api/notifications', proxy(NOTIFICATION_SERVICE_URL, proxyOptions));

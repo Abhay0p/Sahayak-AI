@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 8001;
 
 app.use(cors());
@@ -23,6 +23,8 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', service: 'Auth Service' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Auth Service is running on http://localhost:${PORT}`);
-});
+if (!process.env.IS_MONOLITH) {
+  app.listen(PORT, () => {
+    console.log(`Auth Service is running on http://localhost:${PORT}`);
+  });
+}

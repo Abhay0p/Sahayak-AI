@@ -226,13 +226,17 @@ export default function FamilyPortal() {
           <DailySummary patientId={selectedPatientId} />
           <TodayGlance patientId={selectedPatientId} />
           <NeedsAttention patientId={selectedPatientId} />
-          <UpcomingActivity patientId={selectedPatientId} />
+          <div id="upcoming-activity"><UpcomingActivity patientId={selectedPatientId} /></div>
           <ActivityTimeline patientId={selectedPatientId} />
           <RecentGames patientId={selectedPatientId} />
           <QuickActions 
             onCallClick={() => setShowCallSelector(true)}
+            onMessageClick={() => setActiveTab('messages')}
+            onVoiceMessageClick={() => setActiveTab('messages')}
+            onMemoryClick={() => { document.getElementById('memory-file-input')?.click(); }}
+            onScheduleClick={() => { document.getElementById('upcoming-activity')?.scrollIntoView({behavior: 'smooth'}) }}
           />
-          <FamilyMemories patientId={selectedPatientId} />
+          <div id="family-memories"><FamilyMemories patientId={selectedPatientId} /></div>
           <DisclaimerBanner />
           <TrendVisualization patientId={selectedPatientId} />
           <CognitiveActivity patientId={selectedPatientId} />

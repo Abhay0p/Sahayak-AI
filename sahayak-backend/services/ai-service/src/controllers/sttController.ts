@@ -1,18 +1,16 @@
 import { Request, Response } from 'express';
-import speech from '@google-cloud/speech';
+import { SpeechClient } from '@google-cloud/speech';
 
-let client: speech.SpeechClient | null = null;
+let client: SpeechClient | null = null;
 try {
-  let credentials;
   if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     try {
-      credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      client = new SpeechClient({ credentials });
     } catch (e) {
       console.warn('Invalid JSON in GOOGLE_APPLICATION_CREDENTIALS_JSON');
     }
   }
-
-  client = new speech.SpeechClient(credentials ? { credentials } : undefined);
 } catch (e) {
   console.warn('Google Cloud Speech client not initialized. Check credentials.');
 }
@@ -45,7 +43,7 @@ export const processSTT = async (req: Request, res: Response) => {
     // Detects speech in the audio file
     const [response] = await client.recognize(request as any);
     const transcription = response.results
-      ?.map(result => result.alternatives?.[0].transcript)
+      ?.map((result: any) => result.alternatives?.[0].transcript)
       .join('\n');
 
     if (!transcription) {
