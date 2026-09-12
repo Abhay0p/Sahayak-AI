@@ -43,16 +43,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // Sync fake cookie
-      document.cookie = `sahayak_session=simulated-token; path=/; max-age=604800; SameSite=Lax`;
+      // Sync fake cookie (optional, edge middleware is disabled)
+      document.cookie = `sahayak_session=${tokenStr}; path=/; max-age=604800; SameSite=Lax`;
 
       try {
-        // In Demo Mode, the token in localStorage is just the stringified user object
-        const mockUser = JSON.parse(tokenStr);
-        setSession({ user: mockUser, status: 'authenticated' });
+        const data = await apiClient('/api/auth/me');
+        if (data.user) {
+          setSession({ user: data.user, status: 'authenticated' });
+        } else {
+          // If the backend explicitly says no user, they might be logged out
+          setSession({ user: null, status: 'unauthenticated' });
+        }
       } catch (error) {
+        // If the backend fails (502 or timeout), DO NOT clear the token! 
+        // Just set unauthenticated so the UI loads but doesn't forcefully redirect.
         setSession({ user: null, status: 'unauthenticated' });
-        localStorage.removeItem('sahayak_token');
       }
     };
 
@@ -87,29 +92,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (credentials: any) => {
     try {
-      // Demo Mode: Bypass backend /api/auth/login completely
-      const mockUser = {
-        id: 'simulated-id',
-        email: credentials.email || 'demo@example.com',
-        profileId: 'simulated-profile',
-        role: credentials.role || 'elderly'
-      };
+      // We must call the real API to get a valid JWT token so that AI features and backend data work!
+      const data = await apiClient('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+      });
 
-      // Store the mock user object as the token in localStorage
-      localStorage.setItem('sahayak_token', JSON.stringify(mockUser));
-      document.cookie = `sahayak_session=simulated-token; path=/; max-age=604800; SameSite=Lax`;
+      if (data.token) {
+        localStorage.setItem('sahayak_token', data.token);
+        document.cookie = `sahayak_session=${data.token}; path=/; max-age=604800; SameSite=Lax`;
+      }
 
-      setSession({ user: mockUser, status: 'authenticated' });
+      setSession({ user: data.user, status: 'authenticated' });
       
       // Route appropriately
-      if (mockUser.role === 'elderly') router.push('/');
-      else if (mockUser.role === 'caregiver') router.push('/caregiver');
-      else if (mockUser.role === 'family') router.push('/family');
-      else if (mockUser.role === 'healthcare') router.push('/healthcare');
-      else if (mockUser.role === 'admin') router.push('/admin');
+      if (data.user.role === 'elderly') router.push('/');
+      else if (data.user.role === 'caregiver') router.push('/caregiver');
+      else if (data.user.role === 'family') router.push('/family');
+      else if (data.user.role === 'healthcare') router.push('/healthcare');
+      else if (data.user.role === 'admin') router.push('/admin');
       else router.push('/dashboard');
     } catch (error) {
-      console.error('Simulated Login failed:', error);
+      console.error('Login failed:', error);
       throw error;
     }
   };
