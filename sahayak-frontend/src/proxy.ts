@@ -22,55 +22,8 @@ const protectedRoutes: { path: string; roles?: string[] }[] = [
 ];
 
 export async function proxy(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-
-  // Check if the current route is protected
-  const protectedRoute = protectedRoutes.find(route => pathname.startsWith(route.path));
-  
-  if (!protectedRoute) {
-    return NextResponse.next();
-  }
-
-  // Get the session cookie
-  const sessionCookie = req.cookies.get('sahayak_session')?.value;
-
-  if (!sessionCookie) {
-    // If API route is protected, return 401 instead of redirecting
-    if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    // Redirect unauthenticated users to login
-    return NextResponse.redirect(new URL('/login', req.url));
-  }
-
-  try {
-    // Verify the JWT session
-    const { payload } = await jwtVerify(sessionCookie, key, {
-      algorithms: ['HS256'],
-    });
-
-    const user = payload.user as any;
-
-    // Check role-based access if specified
-    if (protectedRoute.roles && protectedRoute.roles.length > 0) {
-      if (!user.role || !protectedRoute.roles.includes(user.role)) {
-        // Redirect unauthorized roles to their appropriate dashboard or home
-        return NextResponse.redirect(new URL('/', req.url));
-      }
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    // Session is invalid or expired
-    if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    
-    // Clear invalid cookie and redirect to login
-    const response = NextResponse.redirect(new URL('/login', req.url));
-    response.cookies.delete('sahayak_session');
-    return response;
-  }
+  // Demo Mode: Bypass all strict edge middleware checks
+  return NextResponse.next();
 }
 
 // Configure which paths the middleware runs on

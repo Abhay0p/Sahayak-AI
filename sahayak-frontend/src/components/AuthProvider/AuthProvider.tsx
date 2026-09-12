@@ -36,28 +36,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      const token = localStorage.getItem('sahayak_token');
-      if (!token) {
+      const tokenStr = localStorage.getItem('sahayak_token');
+      if (!tokenStr) {
         setSession({ user: null, status: 'unauthenticated' });
         document.cookie = 'sahayak_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         return;
       }
 
-      // Sync cookie from localStorage so Edge Middleware can verify auth
-      document.cookie = `sahayak_session=${token}; path=/; max-age=604800; SameSite=Lax`;
+      // Sync fake cookie
+      document.cookie = `sahayak_session=simulated-token; path=/; max-age=604800; SameSite=Lax`;
 
       try {
-        const data = await apiClient('/api/auth/me');
-        if (data.user) {
-          setSession({ user: data.user, status: 'authenticated' });
-        } else {
-          setSession({ user: null, status: 'unauthenticated' });
-          document.cookie = 'sahayak_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-        }
+        // In Demo Mode, the token in localStorage is just the stringified user object
+        const mockUser = JSON.parse(tokenStr);
+        setSession({ user: mockUser, status: 'authenticated' });
       } catch (error) {
         setSession({ user: null, status: 'unauthenticated' });
         localStorage.removeItem('sahayak_token');
-        document.cookie = 'sahayak_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       }
     };
 
@@ -69,8 +64,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const publicPaths = ['/login', '/register', '/forgot-password'];
     
     if (session.status === 'unauthenticated' && !publicPaths.includes(pathname)) {
-      router.push('/login');
-      return;
+      // In demo mode, we won't aggressively redirect to login if the session is unauthenticated.
+      // We will let the user stay on the page (though data might not load).
+      // If you still want it to redirect on genuine fresh loads, keep this, but the user requested removal.
+      // router.push('/login');
+      // return;
     }
 
     // Role-based protection
@@ -89,25 +87,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (credentials: any) => {
     try {
-      const data = await apiClient('/api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify(credentials),
-      });
+      // Demo Mode: Bypass backend /api/auth/login completely
+      const mockUser = {
+        id: 'simulated-id',
+        email: credentials.email || 'demo@example.com',
+        profileId: 'simulated-profile',
+        role: credentials.role || 'elderly'
+      };
 
-      if (data.token) {
-        localStorage.setItem('sahayak_token', data.token);
-        document.cookie = `sahayak_session=${data.token}; path=/; max-age=604800; SameSite=Lax`;
-      }
+      // Store the mock user object as the token in localStorage
+      localStorage.setItem('sahayak_token', JSON.stringify(mockUser));
+      document.cookie = `sahayak_session=simulated-token; path=/; max-age=604800; SameSite=Lax`;
 
-      setSession({ user: data.user, status: 'authenticated' });
-      if (data.user.role === 'elderly') router.push('/');
-      else if (data.user.role === 'caregiver') router.push('/caregiver');
-      else if (data.user.role === 'family') router.push('/family');
-      else if (data.user.role === 'healthcare') router.push('/healthcare');
-      else if (data.user.role === 'admin') router.push('/admin');
+      setSession({ user: mockUser, status: 'authenticated' });
+      
+      // Route appropriately
+      if (mockUser.role === 'elderly') router.push('/');
+      else if (mockUser.role === 'caregiver') router.push('/caregiver');
+      else if (mockUser.role === 'family') router.push('/family');
+      else if (mockUser.role === 'healthcare') router.push('/healthcare');
+      else if (mockUser.role === 'admin') router.push('/admin');
       else router.push('/dashboard');
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Simulated Login failed:', error);
       throw error;
     }
   };
