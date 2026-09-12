@@ -58,7 +58,7 @@ export default function LoginPage() {
       if (role === 'family') demoEmail = 'family@example.com';
       if (role === 'healthcare') demoEmail = 'doctor@example.com';
       
-      await login({ email: demoEmail, password: 'password123', rememberMe: true });
+      await login({ email: demoEmail, password: 'demo123', rememberMe: true });
       // Login handles the redirect internally
     } catch (err: any) {
       setError(err.message || 'Failed to switch role');
