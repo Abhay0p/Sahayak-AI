@@ -7,8 +7,10 @@ dotenv.config();
 export const app = express();
 const PORT = process.env.PORT || 8001;
 
-app.use(cors());
-app.use(express.json());
+if (!process.env.IS_MONOLITH) {
+  app.use(cors());
+  app.use(express.json());
+}
 
 import authRoutes from './routes/authRoutes';
 import profileRoutes from './routes/profileRoutes';

@@ -16,8 +16,10 @@ export const io = new Server(server, {
   cors: { origin: '*', methods: ['GET', 'POST', 'PATCH', 'DELETE'] }
 });
 
-app.use(cors());
-app.use(express.json({ limit: '20mb' })); // Allow large base64 images
+if (!process.env.IS_MONOLITH) {
+  app.use(cors());
+  app.use(express.json({ limit: '20mb' })); // Allow large base64 images
+}
 
 // Serve uploaded memory photos (static, but gated by memoriesController.serveMemoryFile)
 const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../../../uploads/memories');

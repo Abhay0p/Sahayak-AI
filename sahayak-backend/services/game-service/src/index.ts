@@ -7,8 +7,10 @@ dotenv.config();
 export const app = express();
 const PORT = process.env.PORT || 8003;
 
-app.use(cors());
-app.use(express.json());
+if (!process.env.IS_MONOLITH) {
+  app.use(cors());
+  app.use(express.json());
+}
 
 import gameRoutes from './routes/gameRoutes';
 
