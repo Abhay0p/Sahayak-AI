@@ -1,85 +1,39 @@
 version: '3.8'
 
 services:
-  api-gateway:
-    build: 
-      context: ./api-gateway
+  backend-monolith:
+    build:
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
       - PORT=8000
-      - AUTH_SERVICE_URL=http://auth-service:8001
-      - HEALTHCARE_SERVICE_URL=http://healthcare-service:8002
-      - GAME_SERVICE_URL=http://game-service:8003
-      - AI_SERVICE_URL=http://ai-service:8004
-      - NOTIFICATION_SERVICE_URL=http://notification-service:8005
-    depends_on:
-      - auth-service
-
-  auth-service:
-    build:
-      context: ./services/auth-service
-      dockerfile: Dockerfile
-    ports:
-      - "8001:8001"
-    environment:
-      - PORT=8001
-      - DATABASE_URL=file:./dev.db
+      - DATABASE_URL=postgres://sahayak:sahayakpass@postgres:5432/sahayak
       - REDIS_URL=redis://redis:6379
+      - IS_MONOLITH=true
+      # Add other API keys here (e.g. GEMINI_API_KEY) in production or via a .env file
     depends_on:
       - redis
+      - postgres
+    env_file:
+      - .env
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=sahayak
+      - POSTGRES_PASSWORD=sahayakpass
+      - POSTGRES_DB=sahayak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
 
-  healthcare-service:
-    build:
-      context: ./services/healthcare-service
-      dockerfile: Dockerfile
-    ports:
-      - "8002:8002"
-    environment:
-      - PORT=8002
-      - DATABASE_URL=file:./dev.db
-    depends_on:
-      - redis
-
-  game-service:
-    build:
-      context: ./services/game-service
-      dockerfile: Dockerfile
-    ports:
-      - "8003:8003"
-    environment:
-      - PORT=8003
-      - DATABASE_URL=file:./dev.db
-    depends_on:
-      - redis
-
-  ai-service:
-    build:
-      context: ./services/ai-service
-      dockerfile: Dockerfile
-    ports:
-      - "8004:8004"
-    environment:
-      - PORT=8004
-      - DATABASE_URL=file:./dev.db
-    depends_on:
-      - redis
-
-  notification-service:
-    build:
-      context: ./services/notification-service
-      dockerfile: Dockerfile
-    ports:
-      - "8005:8005"
-    environment:
-      - PORT=8005
-      - DATABASE_URL=file:./dev.db
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      - redis
+volumes:
+  postgres_data:
