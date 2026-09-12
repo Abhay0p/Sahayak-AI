@@ -16,10 +16,6 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// Set up Socket.IO
-export const io = new Server(server, {
-  cors: { origin: '*', methods: ['GET', 'POST', 'PATCH', 'DELETE'] }
-});
 
 // ==========================================
 // 1. Mount Microservices
