@@ -23,7 +23,10 @@ COPY . .
 # Generate Prisma Client
 RUN cd packages/database && npx prisma generate
 
-# Build the workspaces (TypeScript compilation)
+# Build the database workspace first to satisfy dependencies
+RUN npm run build --workspace=@sahayak/database
+
+# Build the rest of the workspaces
 RUN npm run build --workspaces --if-present
 
 # Set environment variables
